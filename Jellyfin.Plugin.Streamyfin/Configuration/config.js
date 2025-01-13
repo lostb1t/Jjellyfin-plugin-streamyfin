@@ -178,16 +178,16 @@ export default function (view) {
         })
 
         // Titles
-        document.querySelectorAll(".je-object__title")?.forEach?.(title => {
-            const span = title.closest("span")
-            if (span) {
-                const innerText = span.innerText
-                const legend = document.createElement("legend")
-                legend.innerText = innerText;
-
-                span.replaceWith(legend)
-            }
-        })
+        // document.querySelectorAll(".je-object__title")?.forEach?.(title => {
+        //     const span = title.closest("span")
+        //     if (span) {
+        //         const innerText = span.innerText
+        //         const legend = document.createElement("legend")
+        //         legend.innerText = innerText;
+        //
+        //         span.replaceWith(legend)
+        //     }
+        // })
         
         document.querySelectorAll(".je-object__container")?.forEach?.(description => {
             description.className = "fieldDescription"
