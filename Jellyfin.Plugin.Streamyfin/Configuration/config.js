@@ -157,7 +157,7 @@ export default function (view) {
                         container.className = "inputContainer"
                     }
                     
-                    const format = child.dataset?.['data-schemaformat']
+                    const format = child.dataset?.['schemaformat']
                     
                     if (format && format.includes("int")) {
                         child.type = 'number';
@@ -175,6 +175,27 @@ export default function (view) {
         document.getElementById('json-editor').childNodes.forEach((child, index) => {
             if (child.className === "je-object__container") {
                 child.className = "verticalSection-extrabottompadding"
+
+                child.childNodes.forEach((innerChild, index) => {
+                    if (innerChild.className === "je-header je-object__title") {
+                        innerChild.className = "";
+
+                        innerChild.childNodes.forEach((c, index) => {
+                            if (c.tagName === "SPAN") {
+                                const innerText = c.innerText
+                                const header = document.createElement("h2")
+                                header.innerText = innerText
+                                    .replaceAll("_", " ")
+                                    .replace(
+                                        /\w\S*/g,
+                                        text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+                                    );
+
+                                c.replaceWith(header)
+                            }
+                        })
+                    }
+                })
             }
         })
 
@@ -183,20 +204,29 @@ export default function (view) {
             panel.className = "";
         })
 
-        // Titles
-        // document.querySelectorAll(".je-object__title")?.forEach?.(title => {
-        //     const span = title.closest("span")
-        //     if (span) {
-        //         const innerText = span.innerText
-        //         const legend = document.createElement("legend")
-        //         legend.innerText = innerText;
-        //
-        //         span.replaceWith(legend)
-        //     }
-        // })
+        // Remaining Field Titles
+        document.querySelectorAll(".je-object__title")?.forEach?.(titleContainer => {
+            titleContainer.className = "";
+            titleContainer.childNodes.forEach((child, index) => {
+                if (child.tagName === "SPAN") {
+                    const innerText = child.innerText
+                    const header = document.createElement("h3")
+                    header.innerText = innerText
+                        .replaceAll("_", " ")
+                        .replace(
+                            /\w\S*/g,
+                            text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+                        );
+
+                    child.replaceWith(header)
+                }
+            })
+        })
+        
+        document.querySelectorAll(".je-object__controls")?.forEach?.(el => el.remove())
         
         document.querySelectorAll(".je-object__container")?.forEach?.(description => {
-            description.className = "fieldDescription"
+            description.className = ""
         })
     }
 }
