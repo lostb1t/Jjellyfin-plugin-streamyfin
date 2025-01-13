@@ -100,17 +100,18 @@ export default function (view) {
                     schema: schema,
                     disable_edit_json: true,
                     disable_properties: true,
-                    disable_collapse: true,
+                    // disable_collapse: false,
                     no_additional_properties: true,
                     use_default_values: false
                 });
+                
+                Streamyfin.jsonEditor.on('ready', stylizeFormForJellyfin);
             })
 
             console.log("init");
             Streamyfin.loadConfig();
             Streamyfin.btnSave.addEventListener("click", Streamyfin.saveConfig);
             Streamyfin.switchBtn.addEventListener("click", Streamyfin.toggleEditor);
-            stylizeFormForJellyfin();
         }
     }
 
@@ -127,6 +128,7 @@ export default function (view) {
     }
     
     function stylizeFormForJellyfin() {
+        // Inputs
         document.querySelectorAll(".form-control")?.forEach?.(parent => {
             parent.childNodes.forEach((child, index) => {
                 const container = child.closest(".row")
@@ -158,17 +160,32 @@ export default function (view) {
             })
         })
 
+        // Descriptions
         document.querySelectorAll(".je-form-input-label")?.forEach?.(description => {
             description.className = "fieldDescription"
         })
 
+        // Main objects inside config
         document.getElementById('json-editor').childNodes.forEach((child, index) => {
             if (child.className === "je-object__container") {
                 child.className = "verticalSection-extrabottompadding"
-                // const title = child.querySelector('.je-header');
-                // if (title) {
-                //     title.className = ""
-                // }
+            }
+        })
+
+        // Groups
+        document.querySelectorAll(".je-indented-panel")?.forEach?.(panel => {
+            panel.className = "";
+        })
+
+        // Titles
+        document.querySelectorAll(".je-object__title")?.forEach?.(title => {
+            const span = title.closest("span")
+            if (span) {
+                const innerText = span.innerText
+                const legend = document.createElement("legend")
+                legend.innerText = innerText;
+
+                span.replaceWith(legend)
             }
         })
         
@@ -177,6 +194,3 @@ export default function (view) {
         })
     }
 }
-
-
-// waitForScript();
