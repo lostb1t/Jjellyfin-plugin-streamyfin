@@ -100,9 +100,9 @@ export default function (view) {
                     schema: schema,
                     disable_edit_json: true,
                     disable_properties: true,
-                    // disable_collapse: false,
+                    disable_collapse: true,
                     no_additional_properties: true,
-                    use_default_values: false
+                    // use_default_values: false
                 });
                 
                 Streamyfin.jsonEditor.on('ready', stylizeFormForJellyfin);
@@ -155,6 +155,12 @@ export default function (view) {
                     child.className = "emby-input"
                     if (container) {
                         container.className = "inputContainer"
+                    }
+                    
+                    const format = child.dataset?.['data-schemaformat']
+                    
+                    if (format && format.includes("int")) {
+                        child.type = 'number';
                     }
                 }
             })
